@@ -15,6 +15,7 @@ class DonorSignUp extends Component {
         errMsg : ''
     }
 
+    
     onSubmit = event => {
         event.preventDefault();
         
@@ -28,9 +29,9 @@ class DonorSignUp extends Component {
                 console.log("Donor Added Successfully");
                 window.location = "/hospital-list/" + city;
             })
-            .catch(err=> this.setState({ errMsg : err.message }));
-            
+            .catch(err=> this.setState({ errMsg : err.message }));      
     }
+
 
     onChange = event => {
         this.setState({ [event.target.name]: event.target.value });

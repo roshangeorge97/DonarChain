@@ -4,7 +4,7 @@ import OrganChain from '../ethereum/organchain';
 
 class DonorLogin extends Component{
     state ={
-        publicKey : '',
+        publicKey : '0xdC922C3260c58eA64fe8293F99dC62d9856523eC',
         loading : false,
         errMsg : ''
     }
@@ -17,11 +17,12 @@ class DonorLogin extends Component{
         const {publicKey} = this.state;
 
         try{
-            await OrganChain.methods.getDonor(publicKey).call();
+            await OrganChain.methods.getDonor(publicKey);
             window.location = `/donor/profile/${publicKey}`;
         }
         catch(err){
             this.setState({ errMsg : "You are not approved yet OR you are not registred!" })
+            console.log(publicKey)
         }
         this.setState( { loading : false} );
     }

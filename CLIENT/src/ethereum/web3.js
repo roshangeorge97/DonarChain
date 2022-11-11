@@ -1,16 +1,32 @@
-import Web3 from 'web3';
+import Web3 from "web3";
 let web3;
 
-if( typeof window != 'undefined' && typeof window.web3 != 'undefined'){
-    // We are into the browser and metamask is installed 
-    web3 = new Web3(window.web3.currentProvider);;
-}
-else{
-    // we are on the server OR user is not running metamask
-    const provider = new Web3.providers.HttpProvider(
-        'https://rinkeby.infura.io/v3/a02e8aeac81f41cca74aa1260ad4fde2'
-    );
-    web3 = new Web3(provider);
-}
+      // Modern dapp browsers...
+      if (window.ethereum) {
+         web3 = new Web3(window.ethereum);
+        try {
+          // Request account access if needed
+           window.ethereum.enable();
+          // Acccounts now exposed
+        } catch (error) {
 
-export default web3;
+        }
+      }
+      // Legacy dapp browsers...
+      else if (window.web3) {
+        // Use Mist/MetaMask's provider.
+         web3 = window.web3;
+        console.log("Injected web3 detected.");
+
+      }
+      // Fallback to localhost; use dev console port by default...
+      else {
+        const provider = new Web3.providers.HttpProvider(
+          "http://127.0.0.1:7545"
+        );
+         web3 = new Web3(provider);
+        console.log("No web3 instance injected, using Local web3.");
+
+      }
+
+export default web3

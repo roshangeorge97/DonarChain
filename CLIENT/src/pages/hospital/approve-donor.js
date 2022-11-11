@@ -58,6 +58,7 @@ class ApproveDonor extends Component{
 
                 try{
                     const accounts = await web3.eth.getAccounts();
+                    console.log(accounts[0]);
                     await OrganChain.methods.addDonor(donorId, this.state.ipfsHash, this.state.EMRHash, organ, bloodgroup).send({
                                 from : accounts[0],
                                 gas: 1000000

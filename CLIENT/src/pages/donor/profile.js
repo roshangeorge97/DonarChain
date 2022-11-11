@@ -51,7 +51,7 @@ class Profile extends Component{
                 data = JSON.parse(data);
                 this.setState({recipient : data});
 
-                axios.get(`/api/hospitals/profile/${recipient[0]}`)
+                axios.get('/api/hospitals/profile/${recipient[0]}')
                     .then(res => {
                         this.setState({hospital : res.data});
                     })

@@ -11,8 +11,6 @@ db.once('open', function() {
   console.log("Connection Established with Test Database!")
 });
 
-
-
 var hospitals = [new Hospital({
 	username: 'Ace Hospital',
 	password: (new Hospital()).generateHash("Admin123"),
