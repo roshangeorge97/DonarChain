@@ -1,11 +1,11 @@
-# OrganChain
+# DonarChain
 A Decentralized application for tracking Organs donations in hospitals and minimizing the scope of Organ trafficking using Blockchain (Ethereum) technology.<br/>
 
 ### Instructions to o Run the Project :
 
-Clone the repository by doing `git clone "https://github.com/harshitjaiswal27/OrganChain.git"`
+Clone the repository
 
-#### `cd OrganChain`
+#### `cd DonarChain`
 
 #### To install dependencies for backend server:
 
