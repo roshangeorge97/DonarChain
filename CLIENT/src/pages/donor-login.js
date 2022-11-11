@@ -17,7 +17,7 @@ class DonorLogin extends Component{
         const {publicKey} = this.state;
 
         try{
-            await OrganChain.methods.getDonor(publicKey);
+            await OrganChain.methods.getDonor(publicKey).call();
             window.location = `/donor/profile/${publicKey}`;
         }
         catch(err){

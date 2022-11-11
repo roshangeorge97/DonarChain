@@ -63,6 +63,7 @@ class ApproveDonor extends Component{
                                 from : accounts[0],
                                 gas: 1000000
                             });
+                            console.log(donorId, this.state.ipfsHash, this.state.EMRHash, organ, bloodgroup);
                     this.setState({successMsg:"Donor Approved !"})
                 }
                 catch(err){
