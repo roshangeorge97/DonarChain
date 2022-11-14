@@ -1,11 +1,16 @@
 import React, { Component } from 'react';
 import { Grid, Form, Segment, Header, Button, Divider, Message} from 'semantic-ui-react';
 import axios from 'axios';
-import ipfs from '../../ipfs';
-import OrganChain from '../../ethereum/organchain'; 
-import web3 from '../../ethereum/web3';
+import ipfs from './ipfs';
+import OrganChain from './ethereum/organchain'; 
+import web3 from './ethereum/web3';
+import DonorProfile from './pages/donor/profile';
+import { ReactDOM } from 'react';
 
 class ApproveDonor extends Component{
+
+
+    
     state ={
         fname : '',
         lname : '',
@@ -38,11 +43,15 @@ class ApproveDonor extends Component{
         this.setState( { errMsg :'', successMsg:'' } );
 
         const { fname, lname , email, buffer, donorId } = this.state;
+        console.log(this.state)
 
+   
+        
         axios.get(`/api/donors/${email}`)
             .then(async (res)=>{
-
+                console.log(res)
                 this.setState({loading :true });
+
 
                 const {gender, city, phone, email, organ, bloodgroup } = res.data;
 
@@ -50,10 +59,13 @@ class ApproveDonor extends Component{
                 
                 const buf = Buffer.from(data);
                 
+
                 const result = await ipfs.files.add(buf);
+                console.log(result)
                 this.setState({ipfsHash :result[0].hash});
                 
                 const result1 = await ipfs.files.add(buffer);
+                console.log(result1)
                 this.setState({EMRHash :result1[0].hash});
 
                 try{
@@ -74,8 +86,13 @@ class ApproveDonor extends Component{
             .catch(err=>  this.setState({ errMsg : err.message }));
     }
 
+
     render(){
+        
         return(
+            
+            <div>
+        
             <Grid centered columns={2} style={{marginTop:'20px'}}>
                 <Grid.Column width={6}>
                     <Segment>
@@ -132,9 +149,14 @@ class ApproveDonor extends Component{
                         </Form>
                     </Segment>
                 </Grid.Column>
+                
             </Grid>
+           
+            </div>
         )
     }
 }
+
+
 
 export default ApproveDonor;

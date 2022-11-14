@@ -4,6 +4,7 @@ import jwtDecode from 'jwt-decode';
 import ipfs from '../../ipfs';
 import OrganChain from '../../ethereum/organchain';
 import web3 from '../../ethereum/web3';
+import axios from 'axios';
 
 class RegisterRecipient extends Component {
     state = {
@@ -24,12 +25,22 @@ class RegisterRecipient extends Component {
         successMsg:''
     }
 
+
+
     onSubmit = async (event) => {
         event.preventDefault();
         
         this.setState( { loading :true , errMsg :'', successMsg:'' } );
 
         const { fname, lname, gender, city, phone, email, bloodgroup, organ, buffer, publicKey } = this.state;
+        
+        const recipient = {  fname, lname, gender, city, phone, email, bloodgroup, organ, buffer, publicKey };
+
+        axios.post("/api/recipient",recipient)
+            .then((res) => {
+                console.log(res);
+            })
+            .catch(err=> this.setState({ errMsg : err.message }));      
 
         try{
             const data = JSON.stringify({ fname, lname, gender, city, phone, email});

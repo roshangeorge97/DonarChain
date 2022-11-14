@@ -4,6 +4,7 @@ import { Grid, Divider, Dimmer, Loader} from 'semantic-ui-react';
 import OrganChain from '../../ethereum/organchain';
 import ipfs from '../../ipfs';
 import RenderList from './render-list';
+import axios from 'axios';
 
 class TransplantMatch extends Component{
 
@@ -17,26 +18,35 @@ class TransplantMatch extends Component{
         const hospitalId = hospital.hospital.hospitalpublickey;
         try{
             const recipientCount = await OrganChain.methods.getRecipientCount(hospitalId).call();
+            console.log(hospitalId)
             var recipient_arr = [];
             for( let i=0 ; i<recipientCount ; i++ ){
                 var recipient = await OrganChain.methods.getRecipientDetail(hospitalId, i).call();
+                console.log(recipient)
+
                 if(recipient[1] === "")
                     continue;
-                const res = await ipfs.cat(recipient[1]);
-                const temp = JSON.parse(res.toString());                    
-                const data = JSON.stringify({
-                    fname: temp["fname"],
-                    lname: temp["lname"],
-                    gender: temp["gender"],
-                    city: temp["city"],
-                    contact: temp["phone"],
-                    email: temp["email"],
-                    recipientId: recipient[0],
+                 axios.get(`/api/donors`)
+                .then((res)=>{
+                
+                var data = JSON.stringify({
+                    fname: res.data[0].fname,
+                    lname: res.data[0].lname,
+                    gender:res.data[0].gender,
+                    city: res.data[0].city,
+                    contact: res.data[0].phone,
+                    email: res.data[0].email,
                     organ: recipient[2],
+                    recipientId: recipient[0],
                     bloodgroup: recipient[3]
-                });
+                    });
+          
+                
+
                 const element = JSON.parse(data);
                 recipient_arr.push(element);
+                console.log(recipient_arr)
+            })
             }
             this.setState({recipient_arr});
         }

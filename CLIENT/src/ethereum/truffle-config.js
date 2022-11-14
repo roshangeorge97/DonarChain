@@ -45,6 +45,7 @@ require('dotenv').config();
 const MNEMONIC = process.env;
 
 const HDWalletProvider = require('@truffle/hdwallet-provider');
+const privateKeys = process.env.PRIVATE_KEYS || ""
 
 module.exports = {
   /**
@@ -67,8 +68,7 @@ module.exports = {
      development: {
       host: "127.0.0.1",     // Localhost (default: none)
       port: 7545,            // Standard Ethereum port (default: none)
-      network_id: "*",
-      confirmations: 2, // # of confs to wait between deployments. (default: 0)
+      network_id: "*",// # of confs to wait between deployments. (default: 0)
       skipDryRun: true,    // Any network (default: none)
      },
     //
@@ -104,17 +104,17 @@ module.exports = {
   mocha: {
     // timeout: 100000
   },
-
+  contracts_directory: './contracts/',
+  contracts_build_directory: './build/',
   // Configure your compilers
   compilers: {
-    solc: {
-      version: "0.4.22" // Fetch exact version from solc-bin (default: truffle's version)
+    solc: {// Fetch exact version from solc-bin (default: truffle's version)
       // docker: true,        // Use "0.5.1" you've installed locally with docker (default: false)
       // settings: {          // See the solidity docs for advice about optimization and evmVersion
-      //  optimizer: {
-      //    enabled: false,
-      //    runs: 200
-      //  },
+        optimizer: {
+          enabled: true,
+          runs: 200
+        }
       //  evmVersion: "byzantium"
       // }
     }

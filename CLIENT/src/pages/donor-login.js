@@ -1,12 +1,15 @@
+import Axios from 'axios';
 import React, { Component } from 'react';
 import {Grid, Segment, Header, Form, Button, Divider, Message} from 'semantic-ui-react';
 import OrganChain from '../ethereum/organchain';
+import DonorProfile from './donor/profile';
 
 class DonorLogin extends Component{
     state ={
-        publicKey : '0xdC922C3260c58eA64fe8293F99dC62d9856523eC',
+        publicKey : '',
         loading : false,
-        errMsg : ''
+        errMsg : '',
+        email: ''
     }
 
     onSubmit = async event =>{
@@ -14,11 +17,13 @@ class DonorLogin extends Component{
 
         this.setState( { loading :true , errMsg :'' } );
 
-        const {publicKey} = this.state;
+        const {publicKey,email} = this.state;
 
         try{
-            await OrganChain.methods.getDonor(publicKey).call();
-            window.location = `/donor/profile/${publicKey}`;
+            console.log(email)
+            window.location = `/donor/profile/${publicKey}/${email}`;
+            
+            console.log('profile')
         }
         catch(err){
             this.setState({ errMsg : "You are not approved yet OR you are not registred!" })
@@ -29,17 +34,22 @@ class DonorLogin extends Component{
 
     onChange = event => {
         this.setState({ [event.target.name]: event.target.value });
+        this.setState({ [event.target.name]: event.target.value });
     }
+
+ 
 
     render(){
         return (
             <Grid centered columns={2} style={{marginTop:'20px'}}>
                 <Grid.Column width={6}>
                     <Segment>
+                      
                         <Header as="h3" color="grey" style={{textAlign:"center"}}>
                             Donor Log In
                         </Header>
                         <Divider/>
+                       
                         <Form onSubmit={this.onSubmit} error={!!this.state.errMsg}>
                             <Form.Input 
                                 value={this.state.publicKey} 
@@ -49,6 +59,15 @@ class DonorLogin extends Component{
                                 placeholder='Public Key' 
                                 required
                             />
+                              <Form.Input 
+                                value={this.state.email} 
+                                onChange={this.onChange} 
+                                name="email"  
+                                label='Email' 
+                                placeholder='Public Key' 
+                                required
+                            />
+                            
                             <Message error header="Oops!" content={this.state.errMsg} />
                             <Segment basic textAlign={"center"}>
                                 <Button loading={this.state.loading} positive type='submit'>Log In</Button>

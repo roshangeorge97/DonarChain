@@ -4,60 +4,86 @@ import axios from 'axios';
 import OrganChain from '../../ethereum/organchain';
 import ipfs from '../../ipfs';
 
-class Profile extends Component{
+class DonorProfile extends Component{
+   
+
     state = {
         donor : '',
         recipient : '',
         hospital : '',
         matchFound : false,
-        loading : true
+        loading : true,
+        
     }
 
     componentDidMount = async () => {
-        try{
-            const donor = await OrganChain.methods.getDonor(this.props.match.params.donorId).call();
-            var res = await ipfs.cat(donor[0]);
-            var temp = JSON.parse(res.toString());                    
-            var data = JSON.stringify({
-                    fname: temp["fname"],
-                    lname: temp["lname"],
-                    gender: temp["gender"],
-                    city: temp["city"],
-                    contact: temp["phone"],
-                    email: temp["email"],
-                    donorId: this.props.match.params.donorId,
-                    organ: donor[1],
-                    bloodgroup: donor[2]
-                });
-            data = JSON.parse(data);
+        try{  
+console.log(this.props)
+
+            axios.get(`/api/donors`)
+            .then(async (res)=>{
+               console.log(res)
+
+               const n = res.data.length;
+             console.log(n)
+             var i=0;
+             for(i=0;i<n;i++){
+                if(res.data[i].email==this.props.match.params.email){
+                    var data = JSON.stringify({
+                        fname:res.data[i].fname,
+                        lname :res.data[i].lname,
+                        gender:res.data[i].gender,
+                        city: res.data[i].city,
+                        contact: res.data[i].phone,
+                        email: res.data[i].email,
+                        donorId: res.data[i].donorId,
+                        organ: res.data[i].organ,
+                        bloodgroup: res.data[i].bloodgroup,
+                    });
+                }
+                
+             }
+               
+            console.log(data)
+            var data = JSON.parse(data);
             this.setState({donor : data});
-                            
+                
+            
+
+            const donor = await OrganChain.methods.getDonor(this.props.match.params.donorId).call();
+            console.log(donor[4])
             if(donor[4] !== "0x0000000000000000000000000000000000000000"){
                 this.setState({matchFound : true});
+                
                 const recipient = await OrganChain.methods.getRecipient(donor[4]).call();
-                res = await ipfs.cat(recipient[1]);
-                temp = JSON.parse(res.toString()); 
-                data = JSON.stringify({
-                        fname: temp["fname"],
-                        lname: temp["lname"],
-                        gender: temp["gender"],
-                        city: temp["city"],
-                        contact: temp["phone"],
-                        email: temp["email"],
-                        recipient: donor[4],
-                        organ: recipient[2],
-                        bloodgroup: recipient[3]
+                console.log(recipient)
+                axios.get(`/api/recipient`)
+                .then((res)=>{
+                    console.log(res.data[0])
+                var data = JSON.stringify({
+                    fname: res.data[0].fname,
+                    lname: res.data[0].lname,
+                    gender:res.data[0].gender,
+                    city: res.data[0].city,
+                    contact: res.data[0].phone,
+                    email: res.data[0].email,
+                    recipient: donor[4],
+                    organ: recipient[2],
+                    bloodgroup: recipient[3]
                     });
                 data = JSON.parse(data);
                 this.setState({recipient : data});
-
+                })
                 axios.get(`/api/hospitals/profile/${recipient[0]}`)
                     .then(res => {
                         this.setState({hospital : res.data});
                     })
                     .catch(err=> console.log("Error => "+ err));
             }
-        }
+        })
+
+            }
+        
         catch(err){
             console.log("Error =>"+ err);
         }
@@ -66,18 +92,21 @@ class Profile extends Component{
 
     render(){
         const {donor, recipient, hospital, matchFound } = this.state;
+        
         return(
             <div>
+                
             {
                 this.state.loading ?
                 <Dimmer active={this.state.loading} inverted >
                     <Loader size='massive'>Loading</Loader>
                 </Dimmer>
                 :
+                
                 <Card.Group centered style={{marginTop:"20px", overflowWrap:'break-word'}}>
                     <Card style={{width:"350px"}}>
                         <Card.Content>
-                            <Card.Header style={{textAlign:"center"}}>{donor.fname} {donor.lname}</Card.Header>
+                            <Card.Header style={{textAlign:"center"}}><h1>{donor.fname} {donor.lname}</h1></Card.Header>
                             <Card.Meta style={{textAlign:"center"}}>{donor.donorId}</Card.Meta>
                             <Divider/>
                             <Card.Description style={{fontSize:"16px",marginLeft: "30px"}}>
@@ -134,7 +163,7 @@ class Profile extends Component{
                         :
                         <Card style={{width:"350px"}}>
                             <Card.Content>
-                                <Card.Header style={{textAlign:"center"}}>{recipient.fname} {recipient.lname}</Card.Header>
+                                <Card.Header style={{textAlign:"center"}}><h3>{recipient.fname} {recipient.lname}</h3></Card.Header>
                                 <Card.Meta style={{textAlign:"center"}}>{recipient.recipientId}</Card.Meta>
                                 <Divider/>
                                 <Card.Description style={{fontSize:"16px",marginLeft: "30px"}}>
@@ -154,10 +183,12 @@ class Profile extends Component{
                         </Card>
                     }
                 </Card.Group>
+                
             }
+        
             </div>
         )
     }
 }
 
-export default Profile; 
+export default DonorProfile; 

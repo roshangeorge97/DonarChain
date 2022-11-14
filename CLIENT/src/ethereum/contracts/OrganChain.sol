@@ -1,4 +1,4 @@
-    pragma solidity 0.4.22;
+pragma solidity >=0.4.21;
 
 contract OrganChain{
     
@@ -53,8 +53,8 @@ contract OrganChain{
         address _donor_addr, 
         string memory _ipfsHash,
         string memory _EMRHash,
-        string  _organ, 
-        string  _bloodgroup) public checkDonorExist(_donor_addr) checkRecipientExist(_donor_addr)
+        string memory _organ, 
+        string memory _bloodgroup) public checkDonorExist(_donor_addr) checkRecipientExist(_donor_addr)
         {
             Donor memory newDonor = Donor({
                 donorId : _donor_addr,
@@ -70,7 +70,7 @@ contract OrganChain{
             donor_arr.push(_donor_addr);
         }
     
-    function getDonor(address _donor_addr) public view returns ( string memory, string, string, bool, address){
+    function getDonor(address _donor_addr) public view returns ( string memory, string memory, string memory, bool, address){
             require(Donors[_donor_addr].exist);
             return(
                 Donors[_donor_addr].ipfsHash,
@@ -86,8 +86,8 @@ contract OrganChain{
         address _hospital_addr,
         string memory _ipfsHash,
         string memory _EMRHash,
-        string _organ, 
-        string _bloodgroup) public checkRecipientExist(_recipient_addr) checkDonorExist(_recipient_addr)
+        string memory _organ, 
+        string memory _bloodgroup) public checkRecipientExist(_recipient_addr) checkDonorExist(_recipient_addr)
         {
             Recipient memory newRecipient = Recipient({
                 recipientId : _recipient_addr,
@@ -104,7 +104,7 @@ contract OrganChain{
             Hospital_Recipients[_hospital_addr].push(_recipient_addr);
         }
     
-    function getRecipient(address _recipient_addr) public view returns ( address, string memory, string, string, bool){
+    function getRecipient(address _recipient_addr) public view returns ( address, string memory, string memory, string memory, bool){
             require(Recipients[_recipient_addr].exist);
             return(
                 Recipients[_recipient_addr].hospitalId,
@@ -120,7 +120,7 @@ contract OrganChain{
         return(Hospital_Recipients[_hospital_addr].length);
     }
     
-    function getRecipientDetail(address _hospital_addr, uint256 i) public view returns(address, string memory, string, string){  
+    function getRecipientDetail(address _hospital_addr, uint256 i) public view returns(address, string memory, string memory, string memory){  
             if(!Recipients[Hospital_Recipients[_hospital_addr][i]].matchFound){
                 return(
                     Recipients[Hospital_Recipients[_hospital_addr][i]].recipientId,

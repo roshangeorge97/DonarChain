@@ -19,6 +19,9 @@ router.route('/:email').delete((req,res)=>{
         .catch(err=> res.status(400).json('Error:'+err));
 });
 
+
+
+
 router.route('/').post((req,res)=>{
     Donor.create({
         fname: req.body.fname,

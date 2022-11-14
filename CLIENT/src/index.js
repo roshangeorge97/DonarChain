@@ -4,6 +4,7 @@ import { BrowserRouter as Router } from "react-router-dom";
 import Routes from './Routes';
 import Layout from './components/Layout'
 import './main.css';
+import DonorProfile from './pages/donor/profile';
 
 class App extends Component {
     render(){
@@ -12,6 +13,7 @@ class App extends Component {
                 <Layout >
                     <div style={{marginTop:"20px", marginBottom:"20px"}}>
                         <Routes />
+                        
                     </div>
                 </Layout>
             </Router>

@@ -7,10 +7,11 @@ import DonorProfile from './pages/donor/profile';
 import HospitalList from './pages/hospital-list';
 import HospitalLogin from './pages/hospital-login';
 import Home from './pages/home';
-import ApproveDonor from './pages/hospital/approve-donor';
+import ApproveDonor from './approve-donor';
 import PatientRecord from './pages/hospital/patient-record';
 import RegisterRecipient from './pages/hospital/register-recipient';
 import TransplantMatch  from './pages/hospital/transplant-match';
+
 
 class Routes extends Component{
     render(){
@@ -21,7 +22,7 @@ class Routes extends Component{
                 <Route exact path="/donor-login" component={DonorLogin} />
                 <Route exact path="/hospital-list/:city" component={HospitalList} />
                 <Route exact path="/hospital-login" component={HospitalLogin} />
-                <Route exact path="/donor/profile/:donorId" component={DonorProfile} />
+                <Route exact path="/donor/profile/:donorId/:email" component={DonorProfile} />
                 { window.localStorage.getItem("isAuthenticated") ?
                     <Route exact path="/hospital/register-recipient" component={RegisterRecipient} />
                     : <Redirect to="/hospital-login" />

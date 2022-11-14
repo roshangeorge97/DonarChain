@@ -3,6 +3,7 @@ import { Card, Button, Divider, Header,Portal, Segment} from 'semantic-ui-react'
 import web3 from '../../ethereum/web3';
 import OrganChain from '../../ethereum/organchain';
 import ipfs from '../../ipfs';
+import axios from 'axios';
 
 class RenderList extends Component{
     constructor(props){
@@ -35,6 +36,7 @@ class RenderList extends Component{
             });
 
             const result = await OrganChain.methods.isMatchFound(this.props.recipient.recipientId).call();
+            console.log(result)
             if(result === "false"){
                 throw Object.assign(
                     new Error("Match Not Found!")
@@ -45,17 +47,24 @@ class RenderList extends Component{
                 const donor = await OrganChain.methods.getDonor(donorId).call();
                 this.setState({donorId :donorId, organ: donor[1], bloodgroup:donor[2]}); 
                     
-                const res = await ipfs.cat(donor[0]);
-                const temp = JSON.parse(res.toString());
-                this.setState({
-                    fname: temp["fname"],
-                    lname: temp["lname"],
-                    gender: temp["gender"],
-                    email: temp["email"],
-                    contact: temp["phone"],
-                    city: temp["city"],
-                    donorFound : true
+                axios.get(`/api/recipient`)
+                .then((res)=>{
+                    console.log(res.data[0])
+                var data = JSON.stringify({
+                    fname: res.data[0].fname,
+                    lname: res.data[0].lname,
+                    gender:res.data[0].gender,
+                    city: res.data[0].city,
+                    contact: res.data[0].phone,
+                    email: res.data[0].email,
+                    recipient: donor[4],
+                    donarFound :true
+                    });
+
+                data = JSON.parse(data);
+                this.setState({donar : data});
                 })
+
             }
         }
         catch(err){

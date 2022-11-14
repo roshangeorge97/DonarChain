@@ -34,4 +34,15 @@ router.route('/profile/:publicKey').get((req,res)=>{
         .catch(err => res.status(400).json('Error:'+err));
 })
 
+router.route('/profile/:publicKey/:email').get((req,res)=>{
+    Hospital.findOne({ hospitalpublickey :req.params.publicKey })
+        .then(hospital=>{
+            res.send(hospital)
+        })
+        .catch(err => res.status(400).json('Error:'+err));
+        Donor.findOne({email: req.params.email})
+        .then(donor=> res.json(donor))
+        .catch(err=> res.status(400).json('Error:'+err));
+})
+
 module.exports = router;

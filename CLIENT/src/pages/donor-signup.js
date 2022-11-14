@@ -27,7 +27,7 @@ class DonorSignUp extends Component {
         axios.post("/api/donors",donor)
             .then((res) => {
                 console.log("Donor Added Successfully");
-                window.location = "/hospital-list/" + city;
+                console.log(res)
             })
             .catch(err=> this.setState({ errMsg : err.message }));      
     }
