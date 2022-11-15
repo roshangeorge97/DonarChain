@@ -41,13 +41,38 @@ Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
 ### Technology Stack :
 
-Front-End : ReactJS
+- Front-End : ReactJS
 
-Back-End : NodeJS, Web3JS
+- Back-End : NodeJS, Web3JS
 
-Tools : Truffle Suite, Ganache, Metamask
+- Tools : Truffle Suite, Ganache, Metamask
 
-Database : MongoDB
+- Database : MongoDB
+
+
+### Deploying in Truffle
+
+For Ganache:
+
+   ``
+   truffle migrate --network
+   ``
+   
+### Start IPFS node
+
+   Note : you must Install IPFS in your system before starting the IPFS Node.
+   
+   IPFS installation :
+   
+   ``
+   $ npm install -g ipfs
+   ``
+   
+   Run the Node:
+   
+   ``
+   $ jsipfs daemon
+   ``
 
 
 ### License
