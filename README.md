@@ -42,8 +42,11 @@ Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 ### Technology Stack :
 
 Front-End : ReactJS
+
 Back-End : NodeJS, Web3JS
+
 Tools : Truffle Suite, Ganache, Metamask
+
 Database : MongoDB
 
 
